@@ -1,17 +1,16 @@
+#observe({
+  
+  #shinyjs::hide(selector = "a[data-value=\"enrichGoTab\"]")
+  #shinyjs::hide(selector = "a[data-value=\"enrichKeggTab\"]")
+  #shinyjs::hide(selector = "a[data-value=\"goplotsTab\"]")
+  #shinyjs::hide(selector = "a[data-value=\"keggPlotsTab\"]")
+  #shinyjs::hide(selector = "a[data-value=\"pathviewTab\"]")
+  #shinyjs::hide(selector = "a[data-value=\"wordcloudTab\"]")
 
-observe({
-  
-  shinyjs::hide(selector = "a[data-value=\"gseGoTab\"]")
-  shinyjs::hide(selector = "a[data-value=\"gseKeggTab\"]")
-  shinyjs::hide(selector = "a[data-value=\"goplotsTab\"]")
-  shinyjs::hide(selector = "a[data-value=\"keggPlotsTab\"]")
-  shinyjs::hide(selector = "a[data-value=\"pathviewTab\"]")
-  shinyjs::hide(selector = "a[data-value=\"pubmedTab\"]")
-
-  inputDataReactive()
+  #inputDataReactive()
   
   
-})
+#})
 
 inputDataReactive <- reactive({
   
@@ -37,40 +36,38 @@ inputDataReactive <- reactive({
   else
   {
     inFile <- input$datafile
-    # if (is.null(inFile))
-    #   return(NULL)
+     #if (is.null(inFile))
+       #return(NULL)
     #
-    # inFile = inFile$datapath
+     inFile = inFile$datapath
   }
   
-  #inFile <- input$datafile
-  js$addStatusIcon("datainput","loading")
+  inFile <- input$datafile
+  #js$addStatusIcon("datainput","loading")
   
-  if (!is.null(inFile) ) {
-    
-    seqdata <- read.csv(inFile$datapath, header=TRUE, sep=",")
+  if (!is.null(inFile)) {
+    seqdata <- read.csv(inFile$datapath, header=TRUE, sep=";")
     print('uploaded seqdata')
-    if(ncol(seqdata)==1) { # if file appears not to work as csv try tsv
-      seqdata <- read.tsv(inFile$datapath, header=TRUE)
-      print('changed to tsv, uploaded seqdata')
-    }
+    #if(ncol(seqdata)==1) { # if file appears not to work as csv try tsv
+     # seqdata <- read.tsv(inFile$datapath, header=TRUE)
+      #print('changed to tsv, uploaded seqdata')
+    #}
     shiny::validate(need(ncol(seqdata)>1,
                          message="File appears to be one column. Check that it is a comma or tab delimited (.csv) file."))
     
-    js$addStatusIcon("datainput","done")
-    js$collapse("uploadbox")
-    return(list('data'=seqdata))
+    #js$addStatusIcon("datainput","done")
+    #js$collapse("uploadbox")
+        return(list('data'=seqdata))
   }
   else{
     if(input$data_file_type=="examplecounts")
     {
-      #data = read.csv("www/exampleData/SRX003935_vs_SRX003924.csv")
       
-      data = read.csv("www/exampleData/drosphila_example_de.csv")
+      data = read.csv("www/exampleData/example.csv", header=TRUE, sep=";")
       
       
-      js$addStatusIcon("datainput","done")
-      js$collapse("uploadbox")
+      #js$addStatusIcon("datainput","done")
+      #js$collapse("uploadbox")
       return(list('data'=data))
     }
     return(NULL)
@@ -91,7 +88,7 @@ options = list(scrollX = TRUE))
 
 # check if a file has been uploaded and create output variable to report this
 output$fileUploaded <- reactive({
-
+  
     if(!is.null(inputDataReactive()))
     {
       updateSelectInput(session, "geneColumn", choices = names(inputDataReactive()$data))
@@ -100,9 +97,9 @@ output$fileUploaded <- reactive({
       
       if(input$data_file_type=="examplecounts")
       {
-        updateSelectInput(session, "geneColumn", selected = "X")
-        updateSelectInput(session, "log2fcColumn", selected = "log2FoldChange")
-        updateSelectInput(session, "padjColumn", selected = "padj")
+        updateSelectInput(session, "geneColumn", selected = "Entrez")
+        updateSelectInput(session, "log2fcColumn", selected = "logFC")
+        updateSelectInput(session, "padjColumn", selected = "adj.P.Val")
       }
       
       return(T)
@@ -111,12 +108,12 @@ output$fileUploaded <- reactive({
   return(F)
     
 })
-outputOptions(output, 'fileUploaded', suspendWhenHidden=FALSE)
 
+outputOptions(output, 'fileUploaded', suspendWhenHidden=FALSE)
 
 observeEvent(input$nextInitParams,{
   
-  js$collapse("iParamsbox")
+  #js$collapse("iParamsbox")
   
   organismsDbChoices = c("Human (org.Hs.eg.db)"="org.Hs.eg.db","Mouse (org.Mm.eg.db)"="org.Mm.eg.db","Rat (org.Rn.eg.db)"="org.Rn.eg.db",
                          "Yeast (org.Sc.sgd.db)"="org.Sc.sgd.db","Fly (org.Dm.eg.db)"="org.Dm.eg.db","Arabidopsis (org.At.tair.db)"="org.At.tair.db",
@@ -128,16 +125,11 @@ observeEvent(input$nextInitParams,{
   
   updateSelectInput(session, "organismDb", choices = organismsDbChoices)
   
-  if(input$data_file_type=="examplecounts"){
-    updateSelectInput(session, "organismDb", selected = "org.Dm.eg.db")
-    updateSelectInput(session, "pAdjustMethod", selected = "none")
-    updateNumericInput(session, "minGSSize", value = 3)
-    updateNumericInput(session, "maxGSSize", value = 800)
-  }
-    
+  if(input$data_file_type=="examplecounts")
+    updateSelectInput(session, "organismDb", selected = "org.Hs.eg.db")
   
   
-  js$collapse("createGoBox")
+  #js$collapse("createGoBox")
   
 })
 

@@ -15,7 +15,7 @@ tabItem(tabName = "datainput",
 
                              ),
                              conditionalPanel(condition = "input.data_file_type=='csvfile'",
-                                              fileInput('datafile', 'Choose File Containing Data', multiple = F)
+                                              fileInput('datafile', 'Choose File(s) Containing Data', multiple = TRUE)
                              )
 
                          ),
@@ -24,15 +24,21 @@ tabItem(tabName = "datainput",
                                               
                                               wellPanel(
                                                 column(
-                                                  6,
+                                                  4,
                                                        selectInput("geneColumn","Select Genes column:", choices = c("sdfs","dfs"))
                                                 ),
-                                                column(6,
+                                                column(4,
                                                        selectInput("log2fcColumn","Select Log2FC column:", choices = c("sdfs","dfs"))
                                                 ),
-                                                # column(4,
-                                                #        selectInput("padjColumn","Select padj column:", choices = c("sdfs","dfs"))
-                                                # ),
+                                                column(4,
+                                                       selectInput("padjColumn","Select padj column:", choices = c("sdfs","dfs"))
+                                                ),
+                                                column(6,
+                                                       numericInput("padjCutoff","padj cutoff:", value = 0.05)
+                                                ),
+                                                column(6,
+                                                       numericInput("logfcCuttoff","min log2 fold change :", value = 2)
+                                                ),
                                                 tags$div(class = "clearBoth")
                                               ),
                                               actionButton("nextInitParams","Next", class = "btn-info", style = "width: 100%")
@@ -40,38 +46,35 @@ tabItem(tabName = "datainput",
                                           ),
                                           
                                           
-                                          box(title = "gseGO object Parameters", solidHeader = T, status = "primary", width = 12, collapsible = T,id = "createGoBox", collapsed = T,
+                                          box(title = "EnrichGO object Parameters", solidHeader = T, status = "primary", width = 12, collapsible = T,id = "createGoBox", collapsed = T,
                                             wellPanel(
-                                              column(4,
+                                              column(6,
                                                      selectInput("organismDb","Organism:", choices = NULL, selected = NULL)
                                               ),
-                                              column(4,
+                                              column(6,
                                                      selectInput("keytype","Keytype:", choices = c(""), selected = NULL)
                                               ),
-                                              column(4,
-                                                     selectInput("ontology","Ontology:", choices = c("MF", "BP", "CC","ALL"), selected = "ALL")
+                                              column(6,
+                                                     selectInput("ontology","Ontology:", choices = c("MF", "BP", "CC"), selected = "BP")
                                               ),
                                               column(4,
-                                                     numericInput("nPerm","Permutation #s:", value = 1000, min = 1, max = 100000)
-                                              ),
-                                              column(4,
-                                                     numericInput("minGSSize","minGSSize:", value = 10)
+                                                     numericInput("minGSSize","minGSSize:", value = 5)
                                               ),
                                               column(4,
                                                      numericInput("maxGSSize","maxGSSize:", value = 500)
                                               ),
-                                              column(4,
+                                              column(6,
                                                      numericInput("pvalCuttoff","P-Value Cutoff:", value = 0.05)
                                               ),
-                                              column(4,
-                                                     selectInput("pAdjustMethod","pAdjustMethod:", choices = c("holm", "hochberg", "hommel", "bonferroni", "BH", "BY", "fdr", "none"), selected = "none")
+                                              column(6,
+                                                     numericInput("qvalCuttoff","Q-Value Cutoff:", value = 0.1)
                                               ),
-                                              column(4,
-                                                     selectInput("keggKeyType","keggKeyType:", choices = c("kegg", "ncbi-geneid", "ncib-proteinid","uniprot"), selected = "ncbi-geneid")
+                                              column(6,
+                                                     selectInput("pAdjustMethod","pAdjustMethod:", choices = c("holm", "hochberg", "hommel", "bonferroni", "BH", "BY", "fdr", "none"), selected = "none")
                                               ),
                                               tags$div(class = "clearBoth")
                                             ),
-                                            actionButton("initGo","Create gseGO Object", class = "btn-info", style = "width: 100%")
+                                            actionButton("initGo","Create EnrichGO Object", class = "btn-info", style = "width: 100%")
                                           )
                          )
          ),#column
@@ -80,7 +83,7 @@ tabItem(tabName = "datainput",
                            bsCollapsePanel(title="Data Contents Table:",value="data_panel",
                                            p("Note: if there are more than 20 columns, only the first 20 will show here"),
                                            textOutput("inputInfo"),
-                                           dataTableOutput('countdataDT')
+                                           withSpinner(dataTableOutput('countdataDT'))
                            )
                 )#bscollapse
          )#column

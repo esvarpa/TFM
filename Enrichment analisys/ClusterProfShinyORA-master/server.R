@@ -7,7 +7,7 @@ server <- function(input, output, session) {
   
   source("server-inputData.R",local = TRUE)
   # 
-  source("server-gseGo.R",local = TRUE)
+  source("server-enrichGo.R",local = TRUE)
   # 
   source("server-plots.R",local = TRUE)
   

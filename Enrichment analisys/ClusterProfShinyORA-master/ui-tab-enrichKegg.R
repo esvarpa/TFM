@@ -1,14 +1,15 @@
-tabItem(tabName = "gseKeggTab",
+tabItem(tabName = "enrichKeggTab",
         
-        conditionalPanel("output.gseKEGGAvailable",
+        conditionalPanel("output.enrichKEGGAvailable",
                          
                                   column(2,
-                                         h3(strong("gseKEGG Results")),
+                                         h3(strong("enrichKEGG Results")),
                                          hr(),
-                                         checkboxInput("showAllColumns_kegg","Show all columns", value = F),
-                                         downloadButton('downloadgseKEGGCSV','Save Results as CSV File', class = "btn btn-info", style="margin: 7px;"),
-                                         actionButton("gotoKeggPlots","gseKEGG Plots",class = "btn btn-warning",icon = icon("chart-area"), style="margin: 7px;"),
+                                         checkboxInput("showGeneidKegg","Show geneID column", value = F),
+                                         downloadButton('downloadEnrichKEGGCSV','Save Results as CSV File', class = "btn btn-info", style="margin: 7px;"),
+                                         actionButton("gotoKeggPlots","enrichKEGG Plots",class = "btn btn-warning",icon = icon("chart-area"), style="margin: 7px;"),
                                          actionButton("gotoPathview","Generate Pathview Plot",class = "btn btn-warning",icon = icon("chart-area"), style="margin: 7px;"),
+                                         actionButton("gotoWordcloud1","Word Cloud",class = "btn btn-warning",icon = icon("chart-area"), style="margin: 7px;"),
                                          
                                          wellPanel(h4(strong("Output warning:"), tags$a(href = "#", bubbletooltip = "Description ...",icon("info-circle"))),
                                                    htmlOutput("warningText"), style = "background-color: #f9d8d3;")
@@ -16,7 +17,7 @@ tabItem(tabName = "gseKeggTab",
                                          ),
                                   column(10,
                                          tags$div(class = "BoxArea2",
-                                         withSpinner(dataTableOutput('gseKEGGTable'))
+                                         withSpinner(dataTableOutput('enrichKEGGTable'))
                                          ),
                                          tags$div(class = "clearBoth")
                                          ),

@@ -1,6 +1,6 @@
-# ClusterProfShinyGSEA
-- clusterProfiler Gene Set Enrichment Analysis R shiny
-- This is a part of the NASQAR toolbox
+# ClusterProfShinyORA
+- clusterProfiler Over-representation analysis R shiny
+- This is part of the NASQAR toolbox
 - Pre-print: [NASQAR: A web-based platform for High-throughput sequencing data analysis and visualization](https://doi.org/10.1101/709980)
 
 ---
@@ -9,17 +9,17 @@ This is a web-based interactive application that wraps the popular <a href="http
 
 Users can upload their own differential gene expression (DGE) data from <a href="https://bioconductor.org/packages/release/bioc/html/DESeq2.html" target="_blank"><strong>DESeq2</strong></a> or import data from the upstream <a href="http://nasqar.abudhabi.nyu.edu/deseq2shiny/" target="_blank"><strong>Deseq2Shiny</strong></a> app.
 
-This app allows for quick and easy **Gene Set Enrichment Analysis (GSEA)** of GO-Terms and KEGG pathways.
+This app allows for quick and easy **Over-representation analysis (ORA)** of GO-Terms and KEGG pathways.
 
-It is meant to provide an intuitive interface for researchers to easily **upload and perform GSEA on RNA-seq data** interactively with no prior programming knowledge in R.
+It is meant to provide an intuitive interface for researchers to easily **upload, analyze, visualize, and explore single-cell RNA-seq data** interactively with no prior programming knowledge in R.
 
-Visuals produced include dot plots, category net plots, enrichment map plots, GO induced graphs, gsea plots, and enriched KEGG pathway plots using the  <a href="https://bioconductor.org/packages/release/bioc/html/pathview.html" target="_blank"><strong>Pathview package</strong></a>.
+Visuals produced include dot plots, wordclouds, category net plots, enrichment map plots, GO induced graphs, gsea plots, and enriched KEGG pathway plots using the  <a href="https://bioconductor.org/packages/release/bioc/html/pathview.html" target="_blank"><strong>Pathview package</strong></a>.
 
-The application follows this <a href="https://learn.gencore.bio.nyu.edu/rna-seq-analysis/gene-set-enrichment-analysis/" target="_blank">tutorial</a> <link>
+The application follows this <a href="gencore.nyu.edu/tutorial" target="_blank">tutorial</a> <link>
 
 See below for example output plots.
 
-<img src="www/plotsAll.png" alt="Workflow" style="width: 100%;max-width:300px;margin: 0 auto;display: block;"/>
+<img src="www/plotsAll.jpg" alt="Workflow" style="width: 100%;max-width:300px;margin: 0 auto;display: block;"/>
     
 
 <div class="col-md-12"><hr style="border-top: none;"></div>
@@ -82,10 +82,11 @@ Various forms of visualizations are included for either Go/KEGG:
 * Enriched GO induced graph (goplot, GO only)
 * Enriched GO induced graph (cnetplot)
 * Pathview Plots (KEGG)
+* Word Clouds
 
 ## Acknowledgements:
 
 - [GuangchuangYu/clusterProfiler](https://github.com/GuangchuangYu/clusterProfiler)
 
-- [Mohammed Khalfan - Gene Set Enrichment Tutorial](https://learn.gencore.bio.nyu.edu/rna-seq-analysis/gene-set-enrichment-analysis/)
+- [Mohammed Khalfan - Over-Representation Analysis](https://learn.gencore.bio.nyu.edu/rna-seq-analysis/over-representation-analysis/)
 
