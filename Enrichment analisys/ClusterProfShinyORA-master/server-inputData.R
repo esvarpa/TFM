@@ -97,9 +97,9 @@ output$fileUploaded <- reactive({
       
       if(input$data_file_type=="examplecounts")
       {
-        updateSelectInput(session, "geneColumn", selected = "Entrez")
-        updateSelectInput(session, "log2fcColumn", selected = "logFC")
-        updateSelectInput(session, "padjColumn", selected = "adj.P.Val")
+        updateSelectInput(session, "geneColumn", selected = "X")
+        updateSelectInput(session, "log2fcColumn", selected = "log2FoldChange")
+        updateSelectInput(session, "padjColumn", selected = "padj")
       }
       
       return(T)
