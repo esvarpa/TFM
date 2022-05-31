@@ -1,16 +1,17 @@
-#observe({
-  
-  #shinyjs::hide(selector = "a[data-value=\"enrichGoTab\"]")
-  #shinyjs::hide(selector = "a[data-value=\"enrichKeggTab\"]")
-  #shinyjs::hide(selector = "a[data-value=\"goplotsTab\"]")
-  #shinyjs::hide(selector = "a[data-value=\"keggPlotsTab\"]")
-  #shinyjs::hide(selector = "a[data-value=\"pathviewTab\"]")
-  #shinyjs::hide(selector = "a[data-value=\"wordcloudTab\"]")
 
-  #inputDataReactive()
+observe({
+  
+  shinyjs::hide(selector = "a[data-value=\"gseGoTab\"]")
+  shinyjs::hide(selector = "a[data-value=\"gseKeggTab\"]")
+  shinyjs::hide(selector = "a[data-value=\"goplotsTab\"]")
+  shinyjs::hide(selector = "a[data-value=\"keggPlotsTab\"]")
+  shinyjs::hide(selector = "a[data-value=\"pathviewTab\"]")
+  shinyjs::hide(selector = "a[data-value=\"pubmedTab\"]")
+
+  inputDataReactive()
   
   
-#})
+})
 
 inputDataReactive <- reactive({
   
@@ -36,20 +37,21 @@ inputDataReactive <- reactive({
   else
   {
     inFile <- input$datafile
-     #if (is.null(inFile))
-       #return(NULL)
+    # if (is.null(inFile))
+    #   return(NULL)
     #
-     inFile = inFile$datapath
+    inFile = inFile$datapath
   }
   
   inFile <- input$datafile
   #js$addStatusIcon("datainput","loading")
   
-  if (!is.null(inFile)) {
-    seqdata <- read.csv(inFile$datapath, header=TRUE, sep=";")
+  if (!is.null(inFile) ) {
+    
+    seqdata <- read.csv(inFile$datapath, header=TRUE, sep=",")
     print('uploaded seqdata')
     #if(ncol(seqdata)==1) { # if file appears not to work as csv try tsv
-     # seqdata <- read.tsv(inFile$datapath, header=TRUE)
+      #seqdata <- read.tsv(inFile$datapath, header=TRUE)
       #print('changed to tsv, uploaded seqdata')
     #}
     shiny::validate(need(ncol(seqdata)>1,
@@ -57,11 +59,12 @@ inputDataReactive <- reactive({
     
     #js$addStatusIcon("datainput","done")
     #js$collapse("uploadbox")
-        return(list('data'=seqdata))
+    return(list('data'=seqdata))
   }
   else{
     if(input$data_file_type=="examplecounts")
     {
+      #data = read.csv("www/exampleData/SRX003935_vs_SRX003924.csv")
       
       data = read.csv("www/exampleData/example.csv", header=TRUE, sep=";")
       
@@ -88,7 +91,7 @@ options = list(scrollX = TRUE))
 
 # check if a file has been uploaded and create output variable to report this
 output$fileUploaded <- reactive({
-  
+
     if(!is.null(inputDataReactive()))
     {
       updateSelectInput(session, "geneColumn", choices = names(inputDataReactive()$data))
@@ -108,8 +111,8 @@ output$fileUploaded <- reactive({
   return(F)
     
 })
-
 outputOptions(output, 'fileUploaded', suspendWhenHidden=FALSE)
+
 
 observeEvent(input$nextInitParams,{
   
@@ -125,8 +128,13 @@ observeEvent(input$nextInitParams,{
   
   updateSelectInput(session, "organismDb", choices = organismsDbChoices)
   
-  if(input$data_file_type=="examplecounts")
+  if(input$data_file_type=="examplecounts"){
     updateSelectInput(session, "organismDb", selected = "org.Hs.eg.db")
+    updateSelectInput(session, "pAdjustMethod", selected = "none")
+    updateNumericInput(session, "minGSSize", value = 3)
+    updateNumericInput(session, "maxGSSize", value = 800)
+  }
+    
   
   
   #js$collapse("createGoBox")

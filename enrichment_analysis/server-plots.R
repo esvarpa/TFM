@@ -1,129 +1,74 @@
-output$upsetPlot = renderPlot({
-  withProgress(message = "Plotting upsetplot ...",{
-    go_enrich = enrichGoReactive()$go_enrich
-    
-    upsetplot(go_enrich, 
-            n = input$showCategory_upset)
-  })
-  
-})
-
-output$barPlot = renderPlot({
-  withProgress(message = "Plotting barplot ...",{
-  go_enrich = enrichGoReactive()$go_enrich
-  
-  barplot(go_enrich, 
-          drop = TRUE, 
-          showCategory = input$showCategory_bar, 
-          title = "GO Biological Pathways",
-          font.size = 8)
-  })
-  
-})
-
-
 output$dotPlot = renderPlot({
   withProgress(message = "Plotting dotplot ...",{
-  go_enrich = enrichGoReactive()$go_enrich
+  go_gse = gseGoReactive()$go_gse
   
-  dotplot(go_enrich, 
+  dotplot(go_gse, 
           #drop = TRUE, 
           showCategory = input$showCategory_dot, 
           #title = "GO Biological Pathways",
-          font.size = 8)
+          font.size = 8,
+          split=".sign") + facet_grid(.~.sign)
   })
   
 })
 
-output$enrichPlotMap = renderPlot({
+output$gsePlotMap = renderPlot({
   withProgress(message = "Plotting  enrichment map ...",{
-    go_enrich = enrichGoReactive()$go_enrich
+    go_gse = gseGoReactive()$go_gse
   
-    emapplot(go_enrich, showCategory = input$showCategory_enrichmap)
+    emapplot(go_gse, showCategory = input$showCategory_enrichmap)
   })
   
 })
 
 
-output$goInducedGraph = renderPlot({
-  withProgress(message = "Plotting  induced GO DAG ...",{
-  
-  go_enrich = enrichGoReactive()$go_enrich
-  
-  goplot(go_enrich, showCategory = input$showCategory_goplot)
-  
+output$ridgePlot = renderPlot({
+  withProgress(message = "Plotting ridgeplot ...",{
+    go_gse = gseGoReactive()$go_gse
+    
+    ridgeplot(go_gse, 
+            showCategory = input$showCategory_ridge
+            )
   })
   
 })
 
+
+
+output$gseaplot = renderPlot({
+  withProgress(message = "Plotting  gsea plot ...",{
+  
+  go_gse = gseGoReactive()$go_gse
+  
+  # Use the `Gene Set` param for the index in the title, and as the value for geneSetId
+  gseaplot(go_gse, by = "all", title = go_gse$Description[input$geneSetId_gsea], geneSetID = input$geneSetId_gsea)
+  
+  #goplot(go_gse, showCategory = input$showCategory_goplot)
+  
+  })
+  
+})
 
 output$cnetplot = renderPlot({
   
   withProgress(message = "Plotting Gene-Concept Network ...",{
-  go_enrich = enrichGoReactive()$go_enrich
+  go_gse = gseGoReactive()$go_gse
   
-  cnetplot(go_enrich, categorySize="pvalue", foldChange=myValues$gene_list, showCategory = input$showCategory_cnet)
+  cnetplot(go_gse, categorySize="pvalue", foldChange=myValues$gene_list, showCategory = input$showCategory_cnet)
   })
   
 })
 
-output$wordcloud = renderWordcloud2({
-  withProgress(message = "Plotting Wordcloud ...",{
-    
-    if(input$plotWordcloud)
-    {
-      isolate({
-        if(input$wordcloudGoOrKegg == "enrichGo")
-        {
-          go_enrich = enrichGoReactive()$go_enrich
-        }
-        else
-        {
-          go_enrich = enrichGoReactive()$kegg_enrich
-        }
-        
-        wcdf<-read.table(text=go_enrich$GeneRatio, sep = "/")[1]
-        wcdf$term<-go_enrich[,2]
-        # wc = wordcloud(words = wcdf$term, freq = wcdf$V1, scale=(c(2, .5)), colors=brewer.pal(8, "Dark2"), max.words = input$maxWords)
-        
-        wordsDF = data.frame(word=go_enrich[,2], freq=wcdf$V1)
-        
-        wordsDF = wordsDF[order(-wordsDF$freq),]
-        
-        wordsDF = head(wordsDF, input$maxWords)
-        
-        wordcloud2(wordsDF, color = input$wordsColor, shape = input$wordShape, size = 0.1)
-      })
-      
-    }
-    
-    
-  })
-  
-})
 
 
 ### KEGG
 
-output$barPlot_kegg = renderPlot({
-  withProgress(message = "Plotting barplot ...",{
-    kegg_enrich = enrichGoReactive()$kegg_enrich
-    
-    barplot(kegg_enrich, 
-            drop = TRUE, 
-            showCategory = input$showCategory_bar_kegg, 
-            title = "Enriched Pathways",
-            font.size = 8)
-  })
-  
-})
-
 
 output$dotPlot_kegg = renderPlot({
   withProgress(message = "Plotting dotplot ...",{
-    kegg_enrich = enrichGoReactive()$kegg_enrich
+    kegg_gse = gseGoReactive()$kegg_gse
     
-    dotplot(kegg_enrich, 
+    dotplot(kegg_gse, 
             #drop = TRUE, 
             showCategory = input$showCategory_dot_kegg, 
             title = "Enriched Pathways",
@@ -132,11 +77,11 @@ output$dotPlot_kegg = renderPlot({
   
 })
 
-output$enrichPlotMap_kegg = renderPlot({
+output$gsePlotMap_kegg = renderPlot({
   withProgress(message = "Plotting Enrichment Map ...",{
-    kegg_enrich = enrichGoReactive()$kegg_enrich
+    kegg_gse = gseGoReactive()$kegg_gse
     
-    emapplot(kegg_enrich, showCategory = input$showCategory_enrichmap_kegg)
+    emapplot(kegg_gse, showCategory = input$showCategory_enrichmap_kegg)
     
   })
   
@@ -146,19 +91,46 @@ output$enrichPlotMap_kegg = renderPlot({
 output$cnetplot_kegg = renderPlot({
   
   withProgress(message = "Plotting Gene-Concept Network ...",{
-    kegg_enrich = enrichGoReactive()$kegg_enrich
+    kegg_gse = gseGoReactive()$kegg_gse
     
-    cnetplot(kegg_enrich, categorySize="pvalue", foldChange=myValues$kegg_gene_list, showCategory = input$showCategory_cnet_kegg)
+    cnetplot(kegg_gse, categorySize="pvalue", foldChange=myValues$kegg_gene_list, showCategory = input$showCategory_cnet_kegg)
   })
   
 })
+
+output$ridgePlot_kegg = renderPlot({
+  withProgress(message = "Plotting ridgeplot ...",{
+    kegg_gse = gseGoReactive()$kegg_gse
+    
+    ridgeplot(kegg_gse, 
+              showCategory = input$showCategory_ridge_kegg
+    )
+  })
+  
+})
+
+
+
+output$gseaplot_kegg = renderPlot({
+  withProgress(message = "Plotting  gsea plot ...",{
+    
+    kegg_gse = gseGoReactive()$kegg_gse
+    
+    # Use the `Gene Set` param for the index in the title, and as the value for geneSetId
+    gseaplot(kegg_gse, by = "all", title = kegg_gse$Description[input$geneSetId_gsea_kegg], geneSetID = input$geneSetId_gsea_kegg)
+    
+    
+  })
+  
+})
+
 
 
 pathviewReactive = eventReactive(input$generatePathview,{
   withProgress(message = 'Plotting Pathview ...', {
   
     isolate({
-      kegg_enrich = enrichGoReactive()$kegg_enrich
+      kegg_gse = gseGoReactive()$kegg_gse
       
       setProgress(value = 0.3, detail = paste0("Pathview ID ",input$pathwayIds," ..."))
       dme <- pathview(gene.data=myValues$gene_list, pathway.id=input$pathwayIds, species = myValues$organismKegg, gene.idtype=input$geneid_type)
@@ -204,21 +176,25 @@ output$downloadPathviewPdf <- downloadHandler(
   }
 )
 
-output$wordcloud_kegg = renderWordcloud2({
-  withProgress(message = "Plotting Wordcloud ...",{
-    kegg_enrich = enrichGoReactive()$kegg_enrich
+
+output$pmcPlot = renderPlotly({
+  withProgress(message = "Generating  pmc plot ...",{
     
-    wcdf<-read.table(text=kegg_enrich$GeneRatio, sep = "/")[1]
-    wcdf$term<-kegg_enrich[,2]
-    # wc = wordcloud(words = wcdf$term, freq = wcdf$V1, scale=(c(2, .5)), colors=brewer.pal(8, "Dark2"), max.words = input$maxWords)
+    if(input$plotTrends)
+    {
+      isolate({
+        
+        go_gse = gseGoReactive()$go_gse
+        
+        terms <- input$pubmedTerms
+        if(is.null(terms))
+          return(NULL)
+        pmcplot(terms, seq(input$year_from,input$year_to), proportion=FALSE)
+      })
+      
+    }
     
-    wordsDF = data.frame(word=kegg_enrich[,2], freq=wcdf$V1)
     
-    wordsDF = wordsDF[order(-wordsDF$freq),]
-    
-    wordsDF = head(wordsDF, input$maxWords_kegg)
-    #browser()
-    wordcloud2(wordsDF, color = input$wordsColor_kegg, shape = input$wordShape_kegg, size = 0.1)
   })
   
 })
