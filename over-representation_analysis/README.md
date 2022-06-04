@@ -86,7 +86,7 @@ Various forms of visualizations are included for either Go/KEGG:
 
 ## Acknowledgements:
 
-- [GuangchuangYu/clusterProfiler](https://github.com/GuangchuangYu/clusterProfiler)
+- [Àlex Sánchez Pla]
 
-- [Mohammed Khalfan - Over-Representation Analysis](https://learn.gencore.bio.nyu.edu/rna-seq-analysis/over-representation-analysis/)
+- [Esteban Vargas Parra]
 

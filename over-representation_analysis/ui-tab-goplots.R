@@ -44,21 +44,6 @@ tabItem(tabName = "goplotsTab",
               )
             )
         ),
-        box(title = "Encrichment plot map", solidHeader = T, status = "danger", width = 12, collapsible = T,id = "enrichPlotMap",
-            fluidRow(
-              column(3,
-                     wellPanel(
-                       numericInput("showCategory_enrichmap", "number of categories to show", value = 5)
-                     )
-              )
-              ,
-              column(9,
-                     wellPanel(
-                      plotOutput(outputId = "enrichPlotMap")
-                     )
-              )
-            )
-        ),
         box(title = "Category Netplot", solidHeader = T, status = "danger", width = 12, collapsible = T,id = "goInducedGraph",
             fluidRow(
               column(12,

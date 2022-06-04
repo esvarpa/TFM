@@ -19,7 +19,7 @@ inputDataReactive <- reactive({
   
   query <- parseQueryString(session$clientData$url_search)
   
-  # Check if example selected, or if not then ask to upload a file.
+  # Verifique si se seleccionó el ejemplo, o si no, solicite cargar un archivo.
   shiny:: validate(
     need( identical(input$data_file_type,"examplecounts")|(!is.null(input$datafile)),
           message = "Please select a file")
@@ -31,7 +31,7 @@ inputDataReactive <- reactive({
     shinyjs::show(selector = "a[data-value=\"datainput\"]")
     shinyjs::disable("data_file_type")
     shinyjs::disable("datafile")
-    #js$collapse("uploadbox")
+    
     
   }
   else
@@ -44,21 +44,17 @@ inputDataReactive <- reactive({
   }
   
   inFile <- input$datafile
-  #js$addStatusIcon("datainput","loading")
+  
   
   if (!is.null(inFile) ) {
     
     seqdata <- read.csv(inFile$datapath, header=TRUE, sep=",")
     print('uploaded seqdata')
-    #if(ncol(seqdata)==1) { # if file appears not to work as csv try tsv
-      #seqdata <- read.tsv(inFile$datapath, header=TRUE)
-      #print('changed to tsv, uploaded seqdata')
-    #}
+    
     shiny::validate(need(ncol(seqdata)>1,
                          message="File appears to be one column. Check that it is a comma or tab delimited (.csv) file."))
     
-    #js$addStatusIcon("datainput","done")
-    #js$collapse("uploadbox")
+    
     return(list('data'=seqdata))
   }
   else{
@@ -89,7 +85,7 @@ output$countdataDT <- renderDataTable({
 },
 options = list(scrollX = TRUE))
 
-# check if a file has been uploaded and create output variable to report this
+# verifique si se ha cargado un archivo y cree una variable de salida para informar esto
 output$fileUploaded <- reactive({
 
     if(!is.null(inputDataReactive()))
@@ -116,7 +112,6 @@ outputOptions(output, 'fileUploaded', suspendWhenHidden=FALSE)
 
 observeEvent(input$nextInitParams,{
   
-  #js$collapse("iParamsbox")
   
   organismsDbChoices = c("Human (org.Hs.eg.db)"="org.Hs.eg.db","Mouse (org.Mm.eg.db)"="org.Mm.eg.db","Rat (org.Rn.eg.db)"="org.Rn.eg.db",
                          "Yeast (org.Sc.sgd.db)"="org.Sc.sgd.db","Fly (org.Dm.eg.db)"="org.Dm.eg.db","Arabidopsis (org.At.tair.db)"="org.At.tair.db",
@@ -137,7 +132,7 @@ observeEvent(input$nextInitParams,{
     
   
   
-  #js$collapse("createGoBox")
+
   
 })
 

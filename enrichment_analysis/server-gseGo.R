@@ -11,7 +11,7 @@ gseGoReactive <- eventReactive(input$initGo,{
     
     isolate({
       
-      # remove notifications if they exist
+      # eliminar notificaciones si existen
       removeNotification("errorNotify")
       removeNotification("errorNotify1")
       removeNotification("errorNotify2")
@@ -20,16 +20,16 @@ gseGoReactive <- eventReactive(input$initGo,{
       
       shiny::validate(need(tryCatch({
         df <- inputDataReactive()$data
-        # we want the log2 fold change 
+        # log2 fold change 
         original_gene_list <- df[[input$log2fcColumn]]
         
-        # name the vector
+        # nombre del vector
         names(original_gene_list) <- df[[input$geneColumn]]
         
-        # omit any NA values 
+        # omitir valores Na 
         gene_list<-na.omit(original_gene_list)
         
-        # sort the list in decreasing order (required for clusterProfiler)
+        # ordenar la lista en orden decreciente (requerido para clusterProfiler)
         gene_list = sort(gene_list, decreasing = TRUE)
         
         myValues$gene_list = gene_list
@@ -75,50 +75,32 @@ gseGoReactive <- eventReactive(input$initGo,{
         
         ## KEGG gse
         
-        # Convert gene IDs for gseKEGG function
-        # We will lose some genes here because not all IDs will be converted
+        # Convierta IDs de genes para la función gseKEGG
+        # Se pierden alguna genes porque no todas las identificaciones se convierten
         myValues$convWarningMessage = capture.output(ids<-bitr(names(original_gene_list), fromType = input$keytype, toType = "ENTREZID", OrgDb=input$organismDb), type = "message")
         
-        # remove duplicate IDS (here I use "ENSEMBL", but it should be whatever was selected as keyType)
+        # elimine IDS duplicados (aquí uso "ENSEMBL", pero debería ser lo que se seleccionó como keyType)
         dedup_ids = ids[!duplicated(ids[c(input$keytype)]),]
         
-        # Create a new dataframe df2 which has only the genes which were successfully mapped using the bitr function above
+        # Cree un nuevo marco de datos df2 que tenga solo los genes que se mapearon con éxito usando la función bitr anterior
         #df2 = df[df$X %in% dedup_ids$ENSEMBL,]
         #df2 = df[df$X %in% dedup_ids[,1],]
         df2 = df[df[[input$geneColumn]] %in% dedup_ids[,1],]
         
-        # Create a new column in df2 with the corresponding ENTREZ IDs
+        # Crear una nueva columna en df2 con los ID de ENTREZ correspondientes
         df2$Y = dedup_ids$ENTREZID
         
-        # Create a vector of the gene unuiverse
+        # crear un vector del universo de genes
         kegg_gene_list <- df2[[input$log2fcColumn]]
         
-        # Name vector with ENTREZ ids
+        # nombre del vector con ENTREZ ids
         names(kegg_gene_list) <- df2$Y
         
-        # omit any NA values 
+        # omitir valores NA 
         kegg_gene_list<-na.omit(kegg_gene_list)
         
-        # sort the list in decreasing order (required for clusterProfiler)
+        # ordenar la lista en orden decreciente (requerido para clusterProfiler)
         kegg_gene_list = sort(kegg_gene_list, decreasing = TRUE)
-        # 
-        # myValues$kegg_gene_list = kegg_gene_list
-        # 
-        # # Exctract significant results from df2
-        # # ALLOW USERS TO EDIT 0.05 AS A PARAMETER
-        # kegg_sig_genes_df = subset(df2, padj < input$padjCutoff)
-        # 
-        # # From significant results, we want to filter on log2fold change
-        # kegg_genes <- kegg_sig_genes_df[[input$log2fcColumn]]
-        # 
-        # # Name the vector with the CONVERTED ID!
-        # names(kegg_genes) <- kegg_sig_genes_df$Y
-        # 
-        # # omit NA values
-        # kegg_genes <- na.omit(kegg_genes)
-        # 
-        # # filter on log2fold change (PARAMETER)
-        # kegg_genes <- names(kegg_genes)[abs(kegg_genes) > input$logfcCuttoff]
         
         
         setProgress(value = 0.6, detail = "Performing KEGG enrichment analysis, please wait ...")
@@ -132,7 +114,7 @@ gseGoReactive <- eventReactive(input$initGo,{
                             "org.EcSakai.eg.db"="ecs")
         
         kegg_gse <- gseKEGG(geneList=kegg_gene_list, 
-                            organism=organismsDbKegg[input$organismDb],
+                            organism='hsa',
                             minGSSize = input$minGSSize, 
                             maxGSSize = input$maxGSSize, 
                             pvalueCutoff = input$pvalCuttoff,

@@ -11,7 +11,7 @@ enrichGoReactive <- eventReactive(input$initGo,{
     
     isolate({
       
-      # remove notifications if they exist
+      # eliminar notificaciones si existen
       removeNotification("errorNotify")
       removeNotification("errorNotify1")
       removeNotification("errorNotify2")
@@ -20,45 +20,43 @@ enrichGoReactive <- eventReactive(input$initGo,{
       
       shiny::validate(need(tryCatch({
         df <- inputDataReactive()$data
-        # we want the log2 fold change 
+        # log2 fold change 
         original_gene_list <- df[[input$log2fcColumn]]
         
-        # name the vector
+        # nombre del vector
         names(original_gene_list) <- df[[input$geneColumn]]
         
-        # omit any NA values 
+        # omitir valores NA 
         gene_list<-na.omit(original_gene_list)
         
-        # sort the list in decreasing order (required for clusterProfiler)
+        # ordenar la lista en orden decreciente (requerido para clusterProfiler
         gene_list = sort(gene_list, decreasing = TRUE)
         
         myValues$gene_list = gene_list
         
-        # Exctract significant results
-        # ALLOW USERS TO EDIT 0.05 AS A PARAMETER
-        #sig_genes_df = subset(df, padj < input$padjCutoff)
+        
         sig_genes_df = df[df[,input$padjColumn] < input$padjCutoff,]
         sig_genes_df = na.omit(sig_genes_df)
         
-        # From significant results, we want to filter on log2fold change
+        # A partir de resultados significativos, filtrar el cambio log2fold
         genes <- sig_genes_df[[input$log2fcColumn]]
         
-        # Name the vector
+        # nombre del vector
         names(genes) <- sig_genes_df[[input$geneColumn]]
         
-        # omit NA values
+        # omitir valores NA
         genes <- na.omit(genes)
         
-        # filter on min log2fold change (PARAMETER)
+        # filtrar en cambio mínimo log2fold (PARÁMETRO)
         genes <- names(genes)[abs(genes) > input$logfcCuttoff]
         
         
         setProgress(value = 0.3, detail = "Performing Go enrichment analysis, please wait ...")
-        
+        orgDb.obj = eval( parse(text = input$organismDb, keep.source=FALSE))
         
         go_enrich <- enrichGO(gene = genes,
                               universe = names(gene_list),
-                              OrgDb = input$organismDb, 
+                              OrgDb = orgDb.obj, 
                               keyType = "ENSEMBL",
                               minGSSize = input$minGSSize, 
                               maxGSSize = input$maxGSSize,
@@ -91,49 +89,47 @@ enrichGoReactive <- eventReactive(input$initGo,{
         
         ## KEGG enrich
         
-        # Convert gene IDs for enrichKEGG function
-        # We will lose some genes here because not all IDs will be converted
+        # Conviertir ID de genes para la función enrichKEGG
+        # Se pierden algunos genes aquí porque no todas las identificaciones se convertirán
         myValues$convWarningMessage = capture.output(ids<-bitr(names(original_gene_list), fromType = input$keytype, toType = "ENTREZID", OrgDb=input$organismDb), type = "message")
         
-        # remove duplicate IDS (here I use "ENSEMBL", but it should be whatever was selected as keyType)
+        # elimine IDS duplicados (aquí uso "ENSEMBL", pero debería ser lo que se seleccionó como keyType)
         dedup_ids = ids[!duplicated(ids[c(input$keytype)]),]
         
-        # Create a new dataframe df2 which has only the genes which were successfully mapped using the bitr function above
+        # Cree un nuevo marco de datos df2 que tenga solo los genes que se mapearon con éxito usando la función bitr anterior
         df2 = df[df[[input$geneColumn]] %in% dedup_ids[,input$keytype],]
         
-        # Create a new column in df2 with the corresponding ENTREZ IDs
+        # Crear una nueva columna en df2 con los ID de ENTREZ correspondientes
         df2$Y = dedup_ids$ENTREZID
         
-        # Create a vector of the gene unuiverse
+        # Crear un vector del universo de genes.
         kegg_gene_list <- df2[[input$log2fcColumn]]
         
-        # Name vector with ENTREZ ids
+        # Vector de nombre con ID de ENTREZ
         names(kegg_gene_list) <- df2$Y
         
-        # omit any NA values 
+        # omitir valores NA 
         kegg_gene_list<-na.omit(kegg_gene_list)
         
-        # sort the list in decreasing order (required for clusterProfiler)
+        # ordenar la lista en orden decreciente (requerido para clusterProfiler)
         kegg_gene_list = sort(kegg_gene_list, decreasing = TRUE)
         
         myValues$kegg_gene_list = kegg_gene_list
         
-        # Exctract significant results from df2
-        # ALLOW USERS TO EDIT 0.05 AS A PARAMETER
-        #kegg_sig_genes_df = subset(df2, padj < input$padjCutoff)
+        
         kegg_sig_genes_df = df2[df2[,input$padjColumn] < input$padjCutoff,]
         kegg_sig_genes_df = na.omit(kegg_sig_genes_df)
         
-        # From significant results, we want to filter on log2fold change
+        # A partir de resultados significativos, filtrar el cambio log2fold
         kegg_genes <- kegg_sig_genes_df[[input$log2fcColumn]]
         
-        # Name the vector with the CONVERTED ID!
+        # ¡Nombre el vector con la ID CONVERTIDA!
         names(kegg_genes) <- kegg_sig_genes_df$Y
         
-        # omit NA values
+        # omitir valores NA
         kegg_genes <- na.omit(kegg_genes)
         
-        # filter on log2fold change (PARAMETER)
+        # filtro en cambio log2fold (PARÁMETRO)
         kegg_genes <- names(kegg_genes)[abs(kegg_genes) > input$logfcCuttoff]
         
         
@@ -177,7 +173,6 @@ enrichGoReactive <- eventReactive(input$initGo,{
       
     })
     
-    #if()
     
     
     shinyjs::show(selector = "a[data-value=\"wordcloudTab\"]")

@@ -12,14 +12,7 @@ output$dotPlot = renderPlot({
   
 })
 
-output$gsePlotMap = renderPlot({
-  withProgress(message = "Plotting  enrichment map ...",{
-    go_gse = gseGoReactive()$go_gse
-  
-    emapplot(go_gse, showCategory = input$showCategory_enrichmap)
-  })
-  
-})
+
 
 
 output$ridgePlot = renderPlot({
@@ -77,15 +70,6 @@ output$dotPlot_kegg = renderPlot({
   
 })
 
-output$gsePlotMap_kegg = renderPlot({
-  withProgress(message = "Plotting Enrichment Map ...",{
-    kegg_gse = gseGoReactive()$kegg_gse
-    
-    emapplot(kegg_gse, showCategory = input$showCategory_enrichmap_kegg)
-    
-  })
-  
-})
 
 
 output$cnetplot_kegg = renderPlot({

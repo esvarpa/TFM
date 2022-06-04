@@ -161,11 +161,9 @@ The output results will be either displayed and/or is downloadable
 Various forms of visualizations are included for either Go/KEGG:
 
 * Dot Plot
+* Category Netplot
 * Ridge Plot
-* Enrichment Plot Map
 * GSEA Plot
-* Enriched GO induced graph (goplot, GO only)
-* Enriched GO induced graph (cnetplot)
 * Pathview Plots (KEGG)
 * PubMed Enrichment Trends Plot
 

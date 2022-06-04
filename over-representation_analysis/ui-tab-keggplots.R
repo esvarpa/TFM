@@ -29,21 +29,6 @@ tabItem(tabName = "keggPlotsTab",
               )
             )
         ),
-        box(title = "Encrichment plot map", solidHeader = T, status = "danger", width = 12, collapsible = T,id = "enrichPlotMap_kegg",
-            fluidRow(
-              column(3,
-                     wellPanel(
-                       numericInput("showCategory_enrichmap_kegg", "number of categories to show", value = 5)
-                     )
-              )
-              ,
-              column(9,
-                     wellPanel(
-                      plotOutput(outputId = "enrichPlotMap_kegg")
-                     )
-              )
-            )
-        ),
         box(title = "Category Netplot", solidHeader = T, status = "danger", width = 12, collapsible = T,id = "cnetplot",
             fluidRow(
               column(12,

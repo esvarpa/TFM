@@ -11,7 +11,7 @@ library(enrichplot)
 library(pathview)
 library(plotly)
 library(debrowser)
-library(org.Hs.eg.db)
+library(GO.db)
 library(DESeq2)
 library(seuratOnline)
 library(readr)
@@ -20,7 +20,11 @@ library(wordcloud2)
 library(ggupset)
 library(ggnewscale)
 library(GOSemSim)
-
+library(BiocGenerics)
+library(AnnotationDbi)
+library(BiocParallel)
+library(europepmc)
+library(biomaRt)
 
 # BiocInstaller::biocLite(c("org.Hs.eg.db","org.Mm.eg.db","org.Rn.eg.db","org.Sc.sgd.db","org.Dm.eg.db","org.At.tair.db","org.Dr.eg.db","org.Bt.eg.db","org.Ce.eg.db","org.Gg.eg.db","org.Cf.eg.db","org.Ss.eg.db","org.Mmu.eg.db","org.EcK12.eg.db","org.Xl.eg.db","org.Pt.eg.db","org.Ag.eg.db","org.Pf.plasmo.db","org.EcSakai.eg.db"))
 
@@ -73,13 +77,8 @@ ui <- tagList(
     wellPanel(
       HTML(
         '
-        <p align="center" width="4">Core Bioinformatics, Center for Genomics and Systems Biology, NYU Abu Dhabi</p>
-        <p align="center" width="4">Github: <a href="https://github.com/nasqar/ClusterProfShiny/">https://github.com/nasqar/ClusterProfShiny/</a></p>
-        <p align="center" width="4">Maintained by: <a href="mailto:ay21@nyu.edu">Ayman Yousif</a> </p>
-        <p align="center" width="4">Using ClusterProfiler</p>
-        <p align="center" width="4"><strong>Acknowledgements: </strong></p>
-        <p align="center" width="4">1) <a href="https://github.com/GuangchuangYu/clusterProfiler" target="_blank">GuangchuangYu/clusterProfiler</a></p>
-        <p align="center" width="4">2) <a href="https://learn.gencore.bio.nyu.edu/rna-seq-analysis/over-representation-analysis/" target="_blank">Mohammed Khalfan - Over Representation Analysis Tutorial </a></p>
+        <p align="center" width="4">Vall dHebron Research Institur</p>
+        <p align="center" width="4">Statistics and Bioinformatics Research Group</a> </p>
         <p align="center" width="4">Copyright (C) 2019, code licensed under GPLv3</p>'
         )
       ),

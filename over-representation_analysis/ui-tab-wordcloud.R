@@ -19,24 +19,6 @@ tabItem(tabName = "wordcloudTab",
               )
             )
         )
-        # ,
         
-        # box(title = "Word Cloud", solidHeader = T, status = "danger", width = 12, collapsible = T,id = "wordcloud_kegg",
-        #     fluidRow(
-        #       column(3,
-        #              wellPanel(
-        #                numericInput("maxWords_kegg", "Max. Words", value = 25),
-        #                radioButtons("wordsColor_kegg","Color theme:", c("Light"="random-light", "Dark"="random-dark")),
-        #                selectizeInput("wordShape_kegg","Shape:", c("circle","cardioid","diamond","triangle-forward","triangle","triangle","star"))
-        #              )
-        #       ),
-        #       column(9,
-        #              wellPanel(
-        #                wordcloud2Output(outputId = "wordcloud_kegg")
-        #              )
-        #              
-        #       )
-        #     )
-        # )
         
 )

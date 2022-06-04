@@ -1,7 +1,7 @@
 ---
 title: "Intro"
-author: "Ayman Y"
-date: "June 10, 2019"
+author: "Esteban Vargas Parra"
+date: "June 6, 2021"
 output: html_document
 runtime: shiny
 ---
@@ -157,10 +157,10 @@ The output results will be either displayed and/or is downloadable
 ### 2. Visualization
 Various forms of visualizations are included for either Go/KEGG:
 
+* Upset plot
 * Bar Plot
 * Dot Plot
-* Enrichment Plot Map
-* Enriched GO induced graph (goplot, GO only)
+* Category Netplot
 * Enriched GO induced graph (cnetplot)
 * Pathview Plots (KEGG)
 * Word Clouds

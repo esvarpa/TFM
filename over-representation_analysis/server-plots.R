@@ -35,14 +35,7 @@ output$dotPlot = renderPlot({
   
 })
 
-output$enrichPlotMap = renderPlot({
-  withProgress(message = "Plotting  enrichment map ...",{
-    go_enrich = enrichGoReactive()$go_enrich
-  
-    emapplot(go_enrich, showCategory = input$showCategory_enrichmap)
-  })
-  
-})
+
 
 
 output$goInducedGraph = renderPlot({
@@ -132,15 +125,7 @@ output$dotPlot_kegg = renderPlot({
   
 })
 
-output$enrichPlotMap_kegg = renderPlot({
-  withProgress(message = "Plotting Enrichment Map ...",{
-    kegg_enrich = enrichGoReactive()$kegg_enrich
-    
-    emapplot(kegg_enrich, showCategory = input$showCategory_enrichmap_kegg)
-    
-  })
-  
-})
+
 
 
 output$cnetplot_kegg = renderPlot({
