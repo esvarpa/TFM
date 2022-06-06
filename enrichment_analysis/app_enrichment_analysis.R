@@ -2,8 +2,11 @@ library(shinydashboard)
 library(shinyjs)
 library(shinyBS)
 library(shinycssloaders)
+library(BiocManager)
 library(DT)
 library(shiny)
+#options(clusterProfiler.download.method = "wininet")
+#BiocManager::install("clusterProfiler")
 library(clusterProfiler)
 library(DOSE)
 library(GOplot)
@@ -24,9 +27,10 @@ library(BiocGenerics)
 library(AnnotationDbi)
 library(BiocParallel)
 library(europepmc)
-library(biomaRt)
 
-# BiocInstaller::biocLite(c("org.Hs.eg.db","org.Mm.eg.db","org.Rn.eg.db","org.Sc.sgd.db","org.Dm.eg.db","org.At.tair.db","org.Dr.eg.db","org.Bt.eg.db","org.Ce.eg.db","org.Gg.eg.db","org.Cf.eg.db","org.Ss.eg.db","org.Mmu.eg.db","org.EcK12.eg.db","org.Xl.eg.db","org.Pt.eg.db","org.Ag.eg.db","org.Pf.plasmo.db","org.EcSakai.eg.db"))
+
+
+#BiocInstaller::biocLite(c("org.Hs.eg.db","org.Mm.eg.db","org.Rn.eg.db","org.Sc.sgd.db","org.Dm.eg.db","org.At.tair.db","org.Dr.eg.db","org.Bt.eg.db","org.Ce.eg.db","org.Gg.eg.db","org.Cf.eg.db","org.Ss.eg.db","org.Mmu.eg.db","org.EcK12.eg.db","org.Xl.eg.db","org.Pt.eg.db","org.Ag.eg.db","org.Pf.plasmo.db","org.EcSakai.eg.db"))
 
 jsCode <- "shinyjs.pageCol = function(params){$('body').css('background', params);}"
 
@@ -41,10 +45,10 @@ ui <- tagList(
         menuItem("Input Data", tabName = "datainput", icon = icon("upload")),
         menuItem("gseGO Results", tabName = "gseGoTab", icon = icon("th")),
         menuItem("gseKegg Results", tabName = "gseKeggTab", icon = icon("th")),
-        menuItem("Go Plots", tabName = "goplotsTab", icon = icon("bar-chart")),
-        menuItem("KEGG Plots", tabName = "keggPlotsTab", icon = icon("bar-chart")),
-        menuItem("Pathview Plots", tabName = "pathviewTab", icon = icon("bar-chart")),
-        menuItem("PubMed GO Trends", tabName = "pubmedTab", icon = icon("bar-chart"))
+        menuItem("Go Plots", tabName = "goplotsTab", icon = icon("chart-bar")),
+        menuItem("KEGG Plots", tabName = "keggPlotsTab", icon = icon("chart-bar")),
+        menuItem("Pathview Plots", tabName = "pathviewTab", icon = icon("chart-bar")),
+        menuItem("PubMed GO Trends", tabName = "pubmedTab", icon = icon("chart-bar"))
       )
     ),
     dashboardBody(

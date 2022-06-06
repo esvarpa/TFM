@@ -49,7 +49,7 @@ tabItem(tabName = "datainput",
                                                      selectInput("keytype","Keytype:", choices = c(""), selected = NULL)
                                               ),
                                               column(4,
-                                                     selectInput("ontology","Ontology:", choices = c("MF", "BP", "CC","ALL"), selected = "ALL")
+                                                     selectInput("ontology","Ontology:", choices = c("MF", "BP", "CC"), selected = "CC")
                                               ),
                                               column(4,
                                                      numericInput("nPerm","Permutation #s:", value = 1000, min = 1, max = 100000)
@@ -64,7 +64,7 @@ tabItem(tabName = "datainput",
                                                      numericInput("pvalCuttoff","P-Value Cutoff:", value = 0.05)
                                               ),
                                               column(4,
-                                                     selectInput("pAdjustMethod","pAdjustMethod:", choices = c("holm", "hochberg", "hommel", "bonferroni", "BH", "BY", "fdr", "none"), selected = "none")
+                                                     selectInput("pAdjustMethod","pAdjustMethod:", choices = c("holm", "hochberg", "hommel", "bonferroni", "BH", "BY", "fdr", "none"), selected = "BH")
                                               ),
                                               column(4,
                                                      selectInput("keggKeyType","keggKeyType:", choices = c("kegg", "ncbi-geneid", "ncib-proteinid","uniprot"), selected = "ncbi-geneid")

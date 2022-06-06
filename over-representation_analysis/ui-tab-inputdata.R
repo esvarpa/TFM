@@ -55,7 +55,7 @@ tabItem(tabName = "datainput",
                                                      selectInput("keytype","Keytype:", choices = c(""), selected = NULL)
                                               ),
                                               column(6,
-                                                     selectInput("ontology","Ontology:", choices = c("MF", "BP", "CC"), selected = "BP")
+                                                     selectInput("ontology","Ontology:", choices = c("MF", "BP", "CC"), selected = "CC")
                                               ),
                                               column(4,
                                                      numericInput("minGSSize","minGSSize:", value = 5)
@@ -70,7 +70,7 @@ tabItem(tabName = "datainput",
                                                      numericInput("qvalCuttoff","Q-Value Cutoff:", value = 0.1)
                                               ),
                                               column(6,
-                                                     selectInput("pAdjustMethod","pAdjustMethod:", choices = c("holm", "hochberg", "hommel", "bonferroni", "BH", "BY", "fdr", "none"), selected = "none")
+                                                     selectInput("pAdjustMethod","pAdjustMethod:", choices = c("holm", "hochberg", "hommel", "bonferroni", "BH", "BY", "fdr", "none"), selected = "BH")
                                               ),
                                               tags$div(class = "clearBoth")
                                             ),

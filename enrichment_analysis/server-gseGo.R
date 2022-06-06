@@ -46,10 +46,11 @@ gseGoReactive <- eventReactive(input$initGo,{
                      keyType = "ENSEMBL", 
                      minGSSize = input$minGSSize, 
                      maxGSSize = input$maxGSSize, 
-                     pvalueCutoff = input$pvalCuttoff, 
+                     pvalueCutoff = 0.05, 
                      verbose = T, 
                      OrgDb = orgDb.obj, 
-                     pAdjustMethod = input$pAdjustMethod)
+                     pAdjustMethod = input$pAdjustMethod
+                     )
         
         if(nrow(go_gse) < 1)
         {
@@ -75,14 +76,14 @@ gseGoReactive <- eventReactive(input$initGo,{
         
         ## KEGG gse
         
-        # Convierta IDs de genes para la función gseKEGG
+        # Convierta IDs de genes para la funci?n gseKEGG
         # Se pierden alguna genes porque no todas las identificaciones se convierten
         myValues$convWarningMessage = capture.output(ids<-bitr(names(original_gene_list), fromType = input$keytype, toType = "ENTREZID", OrgDb=input$organismDb), type = "message")
         
-        # elimine IDS duplicados (aquí uso "ENSEMBL", pero debería ser lo que se seleccionó como keyType)
+        # elimine IDS duplicados (aqu? uso "ENSEMBL", pero deber?a ser lo que se seleccion? como keyType)
         dedup_ids = ids[!duplicated(ids[c(input$keytype)]),]
         
-        # Cree un nuevo marco de datos df2 que tenga solo los genes que se mapearon con éxito usando la función bitr anterior
+        # Cree un nuevo marco de datos df2 que tenga solo los genes que se mapearon con ?xito usando la funci?n bitr anterior
         #df2 = df[df$X %in% dedup_ids$ENSEMBL,]
         #df2 = df[df$X %in% dedup_ids[,1],]
         df2 = df[df[[input$geneColumn]] %in% dedup_ids[,1],]
@@ -114,7 +115,7 @@ gseGoReactive <- eventReactive(input$initGo,{
                             "org.EcSakai.eg.db"="ecs")
         
         kegg_gse <- gseKEGG(geneList=kegg_gene_list, 
-                            organism='hsa',
+                            organism=organismsDbKegg[input$organismDb],
                             minGSSize = input$minGSSize, 
                             maxGSSize = input$maxGSSize, 
                             pvalueCutoff = input$pvalCuttoff,

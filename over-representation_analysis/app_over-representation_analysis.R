@@ -4,6 +4,8 @@ library(shinyBS)
 library(shinycssloaders)
 library(DT)
 library(shiny)
+#options(clusterProfiler.download.method = "wininet")
+#BiocManager::install("clusterProfiler")
 library(clusterProfiler)
 library(DOSE)
 library(GOplot)
@@ -41,10 +43,10 @@ ui <- tagList(
         menuItem("Input Data", tabName = "datainput", icon = icon("upload")),
         menuItem("enrichGo", tabName = "enrichGoTab", icon = icon("th")),
         menuItem("enrichKegg", tabName = "enrichKeggTab", icon = icon("th")),
-        menuItem("Go Plots", tabName = "goplotsTab", icon = icon("bar-chart")),
-        menuItem("KEGG Plots", tabName = "keggPlotsTab", icon = icon("bar-chart")),
-        menuItem("Pathview Plots", tabName = "pathviewTab", icon = icon("bar-chart")),
-        menuItem("Word Clouds", tabName = "wordcloudTab", icon = icon("bar-chart"))
+        menuItem("Go Plots", tabName = "goplotsTab", icon = icon("chart-bar")),
+        menuItem("KEGG Plots", tabName = "keggPlotsTab", icon = icon("chart-bar")),
+        menuItem("Pathview Plots", tabName = "pathviewTab", icon = icon("chart-bar")),
+        menuItem("Word Clouds", tabName = "wordcloudTab", icon = icon("chart-bar"))
       )
     ),
     dashboardBody(
