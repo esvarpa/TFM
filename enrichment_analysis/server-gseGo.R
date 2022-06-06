@@ -43,7 +43,7 @@ gseGoReactive <- eventReactive(input$initGo,{
         
         go_gse <- gseGO(geneList=gene_list, 
                      ont = input$ontology, 
-                     keyType = "ENSEMBL", 
+                     keyType = input$keytype, 
                      minGSSize = input$minGSSize, 
                      maxGSSize = input$maxGSSize, 
                      pvalueCutoff = 0.05, 

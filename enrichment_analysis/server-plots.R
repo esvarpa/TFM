@@ -138,7 +138,7 @@ output$pathview_plot  = renderImage({
   
     return(pathviewReactive())
     
-})
+}, deleteFile = TRUE)
 
 output$pathviewPlotsAvailable <-
   reactive({

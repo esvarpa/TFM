@@ -47,7 +47,7 @@ enrichGoReactive <- eventReactive(input$initGo,{
         # omitir valores NA
         genes <- na.omit(genes)
         
-        # filtrar en cambio mínimo log2fold (PARÁMETRO)
+        # filtrar en cambio m?nimo log2fold (PAR?METRO)
         genes <- names(genes)[abs(genes) > input$logfcCuttoff]
         
         
@@ -57,7 +57,7 @@ enrichGoReactive <- eventReactive(input$initGo,{
         go_enrich <- enrichGO(gene = genes,
                               universe = names(gene_list),
                               OrgDb = orgDb.obj, 
-                              keyType = "ENSEMBL",
+                              keyType = input$keytype,
                               minGSSize = input$minGSSize, 
                               maxGSSize = input$maxGSSize,
                               readable = T,
@@ -89,14 +89,14 @@ enrichGoReactive <- eventReactive(input$initGo,{
         
         ## KEGG enrich
         
-        # Conviertir ID de genes para la función enrichKEGG
-        # Se pierden algunos genes aquí porque no todas las identificaciones se convertirán
+        # Conviertir ID de genes para la funci?n enrichKEGG
+        # Se pierden algunos genes aqu? porque no todas las identificaciones se convertir?n
         myValues$convWarningMessage = capture.output(ids<-bitr(names(original_gene_list), fromType = input$keytype, toType = "ENTREZID", OrgDb=input$organismDb), type = "message")
         
-        # elimine IDS duplicados (aquí uso "ENSEMBL", pero debería ser lo que se seleccionó como keyType)
+        # elimine IDS duplicados (aqu? uso "ENSEMBL", pero deber?a ser lo que se seleccion? como keyType)
         dedup_ids = ids[!duplicated(ids[c(input$keytype)]),]
         
-        # Cree un nuevo marco de datos df2 que tenga solo los genes que se mapearon con éxito usando la función bitr anterior
+        # Cree un nuevo marco de datos df2 que tenga solo los genes que se mapearon con ?xito usando la funci?n bitr anterior
         df2 = df[df[[input$geneColumn]] %in% dedup_ids[,input$keytype],]
         
         # Crear una nueva columna en df2 con los ID de ENTREZ correspondientes
@@ -123,13 +123,13 @@ enrichGoReactive <- eventReactive(input$initGo,{
         # A partir de resultados significativos, filtrar el cambio log2fold
         kegg_genes <- kegg_sig_genes_df[[input$log2fcColumn]]
         
-        # ¡Nombre el vector con la ID CONVERTIDA!
+        # ?Nombre el vector con la ID CONVERTIDA!
         names(kegg_genes) <- kegg_sig_genes_df$Y
         
         # omitir valores NA
         kegg_genes <- na.omit(kegg_genes)
         
-        # filtro en cambio log2fold (PARÁMETRO)
+        # filtro en cambio log2fold (PAR?METRO)
         kegg_genes <- names(kegg_genes)[abs(kegg_genes) > input$logfcCuttoff]
         
         

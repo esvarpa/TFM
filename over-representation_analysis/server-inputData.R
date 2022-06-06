@@ -18,7 +18,7 @@ inputDataReactive <- reactive({
   
   query <- parseQueryString(session$clientData$url_search)
   
-  # Verifique si se seleccionó el ejemplo, o si no, solicite cargar un archivo.
+  # Verifique si se seleccion? el ejemplo, o si no, solicite cargar un archivo.
   shiny:: validate(
     need( identical(input$data_file_type,"examplecounts")|(!is.null(input$datafile)),
           message = "Please select a file")
